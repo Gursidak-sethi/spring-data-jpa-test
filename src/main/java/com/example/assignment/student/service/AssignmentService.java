@@ -7,4 +7,5 @@ import java.util.List;
 public interface AssignmentService {
      List<AssignmentDTO> getAssignments();
      AssignmentDTO createAssignment(AssignmentDTO assignmentDTO);
+//     AssignmentDTO updateAssignment(Long id, String name);
 }

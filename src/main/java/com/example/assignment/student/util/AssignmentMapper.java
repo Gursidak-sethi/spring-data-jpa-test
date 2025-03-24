@@ -27,6 +27,7 @@ public class AssignmentMapper {
             student.setStudentId(assignmentDTO.getStudentId());
             assignment.setStudent(student);
         }
+
         return assignment;
     }
 }

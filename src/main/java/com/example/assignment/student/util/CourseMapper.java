@@ -24,6 +24,9 @@ public class CourseMapper {
         course.setCourseId(courseDTO.getCourseId());
         course.setCourseName(courseDTO.getCourseName());
         course.setDepartments(departments);
+        for (Department department : departments) {
+            department.getCourses().add(course);
+        }
         return course;
     }
 }

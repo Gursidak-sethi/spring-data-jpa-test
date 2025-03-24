@@ -19,6 +19,10 @@ public class AssignmentController {
         return assignmentService.getAssignments();
     }
 
+//    @PatchMapping("/update")
+//    public AssignmentDTO updateAssignment(@RequestBody Long id, @RequestBody String name){
+//        return assignmentService.updateAssignment(id,name);
+//    }
     @PostMapping
     public AssignmentDTO createAssignment(@RequestBody AssignmentDTO assignmentDTO){
         return assignmentService.createAssignment(assignmentDTO);

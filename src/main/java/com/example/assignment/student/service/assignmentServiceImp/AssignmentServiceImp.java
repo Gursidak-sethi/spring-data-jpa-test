@@ -9,6 +9,9 @@ import com.example.assignment.student.service.AssignmentService;
 import com.example.assignment.student.util.AssignmentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,11 +34,11 @@ public class AssignmentServiceImp implements AssignmentService {
                 .collect(Collectors.toList());
     }
 
+
     @Override
     public AssignmentDTO createAssignment(AssignmentDTO assignmentDTO) {
-        Assignment assignment = AssignmentMapper.toEntity(assignmentDTO); // Convert DTO to Entity
+        Assignment assignment = AssignmentMapper.toEntity(assignmentDTO);
 
-        // If studentId provided, fetch student and set both sides
         if (assignmentDTO.getStudentId() != null) {
             Optional<Student> studentOpt = studentRepository.findById(assignmentDTO.getStudentId());
             if (studentOpt.isEmpty()) {
@@ -43,10 +46,24 @@ public class AssignmentServiceImp implements AssignmentService {
             }
             Student student = studentOpt.get();
             assignment.setStudent(student);
-            student.setAssignment(assignment); // Bidirectional link
+            student.setAssignment(assignment);
         }
 
         Assignment savedAssignment = assignmentRepository.save(assignment);
-        return AssignmentMapper.toDto(savedAssignment); // Convert Entity to DTO
+        return AssignmentMapper.toDto(savedAssignment);
     }
+
+//    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
+//    @Override
+//    public AssignmentDTO updateAssignment(Long id, String name){
+//        Assignment assignment = assignmentRepository.findById(id).get();
+//        assignment.setAssignmentName(name);
+//        System.out.println(assignment.getAssignmentName());
+//        Assignment saved = assignmentRepository.save(assignment);
+//        try{Thread.sleep(20000);}catch (InterruptedException e){
+//            System.out.println(e);
+//        }
+//        System.out.println();
+//        return AssignmentMapper.toDto(assignment);
+//    }
 }

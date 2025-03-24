@@ -33,18 +33,33 @@ public class DepartmentServiceImp implements DepartmentService {
     }
 
     @Override
-    public DepartmentDTO createDepartment(DepartmentDTO departmentDTO){
-        List<Course> courses = courseRepository.findAllById(departmentDTO.getCourseIds());
-        List<Student> students = studentRepository.findAllById(departmentDTO.getStudentIds());
-        Department department = DepartmentMapper.toEntity(departmentDTO,courses,students);
+    public DepartmentDTO createDepartment(DepartmentDTO departmentDTO) {
+
+        List<Course> courses;
+        if (departmentDTO.getCourseIds() != null && !departmentDTO.getCourseIds().isEmpty()) {
+            courses = courseRepository.findAllById(departmentDTO.getCourseIds());
+        } else {
+            courses = List.of();
+        }
+
+        List<Student> students;
+        if (departmentDTO.getStudentIds() != null && !departmentDTO.getStudentIds().isEmpty()) {
+            students = studentRepository.findAllById(departmentDTO.getStudentIds());
+        } else {
+            students = List.of();
+        }
+
+        Department department = DepartmentMapper.toEntity(departmentDTO, courses, students);
 
         for (Student student : students) {
             student.setDepartment(department);
         }
 
 
-        Department saved = departmentRepository.save(department);
-        return DepartmentMapper.toDTO(saved);
+
+        Department savedDepartment = departmentRepository.save(department);
+        return DepartmentMapper.toDTO(savedDepartment);
     }
+
 
 }

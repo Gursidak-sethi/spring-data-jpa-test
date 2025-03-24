@@ -2,13 +2,16 @@ package com.example.assignment.student.service.studentServiceImp;
 
 import com.example.assignment.student.dto.StudentDTO;
 import com.example.assignment.student.entity.Assignment;
+import com.example.assignment.student.entity.Department;
 import com.example.assignment.student.entity.Student;
 import com.example.assignment.student.repository.AssignmentRepository;
+import com.example.assignment.student.repository.DepartmentRepository;
 import com.example.assignment.student.repository.StudentRepository;
 import com.example.assignment.student.service.StudentService;
 import com.example.assignment.student.util.StudentMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +26,9 @@ public class StudentServiceImp implements StudentService {
     @Autowired
     private AssignmentRepository assignmentRepository;
 
+    @Autowired
+    private DepartmentRepository departmentRepository;
+
     @Override
     public List<StudentDTO> getStudents() {
         List<Student> students = studentRepository.findAll();
@@ -31,11 +37,11 @@ public class StudentServiceImp implements StudentService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public StudentDTO createStudent(StudentDTO studentDto) {
-        Student student = StudentMapper.toEntity(studentDto); // Convert DTO to Entity
+        Student student = StudentMapper.toEntity(studentDto);
 
-        // If assignmentId is provided, fetch assignment and set both sides
         if (studentDto.getAssignmentId() != null) {
             Optional<Assignment> assignmentOpt = assignmentRepository.findById(studentDto.getAssignmentId());
             if (assignmentOpt.isEmpty()) {
@@ -43,10 +49,19 @@ public class StudentServiceImp implements StudentService {
             }
             Assignment assignment = assignmentOpt.get();
             student.setAssignment(assignment);
-            assignment.setStudent(student); // Bidirectional link
+            assignment.setStudent(student);
+        }
+
+        if(studentDto.getDepartmentId()!=null){
+            Optional<Department> departmentOptional = departmentRepository.findById(studentDto.getDepartmentId());
+            if(departmentOptional.isEmpty()){
+                throw new RuntimeException("Department with ID "+ studentDto.getDepartmentId()+" not found.");
+            }
+            Department department = departmentOptional.get();
+            student.setDepartment(department);
         }
 
         Student savedStudent = studentRepository.save(student);
-        return StudentMapper.toDto(savedStudent); // Convert Entity to DTO
+        return StudentMapper.toDto(savedStudent);
     }
 }

@@ -2,6 +2,7 @@ package com.example.assignment.student.util;
 
 import com.example.assignment.student.dto.StudentDTO;
 import com.example.assignment.student.entity.Assignment;
+import com.example.assignment.student.entity.Department;
 import com.example.assignment.student.entity.Student;
 
 public class StudentMapper {
@@ -14,8 +15,14 @@ public class StudentMapper {
         if (student.getAssignment() != null) {
             studentDto.setAssignmentId(student.getAssignment().getAssignmentId());
         }
+
+        if (student.getDepartment() != null) {
+            studentDto.setDepartmentId(student.getDepartment().getDepartmentId());
+        }
+
         return studentDto;
     }
+
 
     public static Student toEntity(StudentDTO studentDto) {
         Student student = new Student();
@@ -26,6 +33,11 @@ public class StudentMapper {
             Assignment assignment = new Assignment();
             assignment.setAssignmentId(studentDto.getAssignmentId());
             student.setAssignment(assignment);
+        }
+        if(studentDto.getDepartmentId() != null){
+            Department department = new Department();
+            department.setDepartmentId(studentDto.getDepartmentId());
+            student.setDepartment(department);
         }
         return student;
     }

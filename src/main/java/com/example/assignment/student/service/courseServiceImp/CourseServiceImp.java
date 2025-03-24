@@ -31,7 +31,7 @@ public class CourseServiceImp implements CourseService {
     public CourseDTO createCourse(CourseDTO courseDTO) {
         List<Department> departments = departmentRepository.findAllById(courseDTO.getDepartmentIds());
         Course course = CourseMapper.toEntity(courseDTO,departments);
-        Course saved = courseRepository.save(course);
-        return CourseMapper.toDTO(saved);
+        Course savedCourse = courseRepository.save(course);
+        return CourseMapper.toDTO(savedCourse);
     }
 }
