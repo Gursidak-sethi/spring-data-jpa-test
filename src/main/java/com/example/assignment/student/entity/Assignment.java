@@ -15,7 +15,11 @@ public class Assignment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long assignmentId;
     private String assignmentName;
-    @OneToOne
-    @JoinColumn(name = "student_id", unique = true)
+
+
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "student_id", unique = true)  // Foreign key column in the assignment table
     private Student student;
+
 }

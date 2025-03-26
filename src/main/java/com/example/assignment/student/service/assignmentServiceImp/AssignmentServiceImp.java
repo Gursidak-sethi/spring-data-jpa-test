@@ -25,7 +25,7 @@ public class AssignmentServiceImp implements AssignmentService {
 
     @Autowired
     private StudentRepository studentRepository;
-
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @Override
     public List<AssignmentDTO> getAssignments() {
         List<Assignment> assignments = assignmentRepository.findAll();
@@ -34,6 +34,10 @@ public class AssignmentServiceImp implements AssignmentService {
                 .collect(Collectors.toList());
     }
 
+    public AssignmentDTO getAssignmentById(Long id){
+        Assignment assignment = assignmentRepository.findById(id).get();
+        return AssignmentMapper.toDto(assignment);
+    }
 
     @Override
     public AssignmentDTO createAssignment(AssignmentDTO assignmentDTO) {
@@ -46,24 +50,24 @@ public class AssignmentServiceImp implements AssignmentService {
             }
             Student student = studentOpt.get();
             assignment.setStudent(student);
-            student.setAssignment(assignment);
+//            student.setAssignment(assignment);
         }
 
         Assignment savedAssignment = assignmentRepository.save(assignment);
         return AssignmentMapper.toDto(savedAssignment);
     }
 
-//    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
-//    @Override
-//    public AssignmentDTO updateAssignment(Long id, String name){
-//        Assignment assignment = assignmentRepository.findById(id).get();
-//        assignment.setAssignmentName(name);
-//        System.out.println(assignment.getAssignmentName());
-//        Assignment saved = assignmentRepository.save(assignment);
-//        try{Thread.sleep(20000);}catch (InterruptedException e){
-//            System.out.println(e);
-//        }
-//        System.out.println();
-//        return AssignmentMapper.toDto(assignment);
-//    }
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED, propagation = Propagation.REQUIRES_NEW)
+    @Override
+    public AssignmentDTO updateAssignment(Long id, AssignmentDTO assignmentDTO){
+        Assignment assignment = assignmentRepository.findById(id).get();
+        assignment.setAssignmentName(assignmentDTO.getAssignmentName());
+        System.out.println(assignment.getAssignmentName());
+        Assignment saved = assignmentRepository.save(assignment);
+        try{Thread.sleep(50000);}catch (InterruptedException e){
+            System.out.println(e);
+        }
+        System.out.println();
+        return AssignmentMapper.toDto(assignment);
+    }
 }

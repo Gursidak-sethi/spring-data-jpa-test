@@ -27,7 +27,6 @@ public class DepartmentMapper {
 
     public static Department toEntity(DepartmentDTO departmentDTO, List<Course> courses, List<Student> students) {
         Department department = new Department();
-        department.setDepartmentId(departmentDTO.getDepartmentId());
         department.setDepartmentName(departmentDTO.getDepartmentName());
         department.setCourses(courses);
         department.setStudents(students);

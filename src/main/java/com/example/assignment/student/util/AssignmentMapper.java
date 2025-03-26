@@ -22,12 +22,6 @@ public class AssignmentMapper {
         assignment.setAssignmentId(assignmentDTO.getAssignmentId());
         assignment.setAssignmentName(assignmentDTO.getAssignmentName());
 
-        if (assignmentDTO.getStudentId() != null) {
-            Student student = new Student();
-            student.setStudentId(assignmentDTO.getStudentId());
-            assignment.setStudent(student);
-        }
-
         return assignment;
     }
 }

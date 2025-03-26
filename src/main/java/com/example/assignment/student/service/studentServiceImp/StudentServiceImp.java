@@ -48,7 +48,7 @@ public class StudentServiceImp implements StudentService {
                 throw new RuntimeException("Assignment with ID " + studentDto.getAssignmentId() + " not found.");
             }
             Assignment assignment = assignmentOpt.get();
-            student.setAssignment(assignment);
+//            student.setAssignment(assignment);
             assignment.setStudent(student);
         }
 

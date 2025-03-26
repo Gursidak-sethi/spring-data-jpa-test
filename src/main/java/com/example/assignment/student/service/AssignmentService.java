@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface AssignmentService {
      List<AssignmentDTO> getAssignments();
+     AssignmentDTO getAssignmentById(Long id);
      AssignmentDTO createAssignment(AssignmentDTO assignmentDTO);
-//     AssignmentDTO updateAssignment(Long id, String name);
+     AssignmentDTO updateAssignment(Long id, AssignmentDTO assignmentDTO);
 }

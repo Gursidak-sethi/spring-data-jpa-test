@@ -21,7 +21,6 @@ public class CourseMapper {
 
     public static Course toEntity(CourseDTO courseDTO,List<Department> departments){
         Course course = new Course();
-        course.setCourseId(courseDTO.getCourseId());
         course.setCourseName(courseDTO.getCourseName());
         course.setDepartments(departments);
         for (Department department : departments) {
