@@ -57,7 +57,7 @@ public class AssignmentServiceImp implements AssignmentService {
         return AssignmentMapper.toDto(savedAssignment);
     }
 
-    @Transactional(isolation = Isolation.READ_UNCOMMITTED, propagation = Propagation.REQUIRES_NEW)
+    @Transactional(isolation = Isolation.READ_UNCOMMITTED)
     @Override
     public AssignmentDTO updateAssignment(Long id, AssignmentDTO assignmentDTO){
         Assignment assignment = assignmentRepository.findById(id).get();
